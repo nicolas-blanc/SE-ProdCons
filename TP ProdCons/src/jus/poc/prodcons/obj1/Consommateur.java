@@ -3,30 +3,27 @@ package jus.poc.prodcons.obj1;
 import jus.poc.prodcons.Acteur;
 import jus.poc.prodcons.ControlException;
 import jus.poc.prodcons.Observateur;
+import jus.poc.prodcons.Tampon;
 import jus.poc.prodcons._Consommateur;
 
 public class Consommateur extends Acteur implements _Consommateur{
 	
 	private int nbMesssageLu;
+	private Tampon tampon;
 
-	protected Consommateur(int type, Observateur observateur,
+	protected Consommateur(Tampon tampon, Observateur observateur,
 			int moyenneTempsDeTraitement, int deviationTempsDeTraitement)
 			throws ControlException {
-		super(type, observateur, moyenneTempsDeTraitement, deviationTempsDeTraitement);
-		// TODO Auto-generated constructor stub
+		super(Acteur.typeConsommateur, observateur, moyenneTempsDeTraitement, deviationTempsDeTraitement);
+		this.tampon = tampon;
+		nbMesssageLu = jus.poc.prodcons.Aleatoire.valeur(moyenneTempsDeTraitement, deviationTempsDeTraitement);
 	}
 
 	@Override
 	public int nombreDeMessages() {
 		return this.nbMesssageLu;
 	}
-	
-	/**
-	 * Consomme un message dans un temps selon une loi de probabilité
-	 */
-	public void consommer(){
-		
-	}
+
 	
 	/**
 	 * Méthode lancé à la création du thread de Concommateur :
@@ -35,7 +32,20 @@ public class Consommateur extends Acteur implements _Consommateur{
 	 * puis récupère un nouveau message
 	 */
 	public void run() {
-		
+		for (int i = 0 ; i < nbMesssageLu; i++){
+			try {
+				
+				MessageX message = (MessageX) tampon.get(this);
+				System.out.println("Retrieve message : " + message.toString());
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+		}
 	}
 
 }

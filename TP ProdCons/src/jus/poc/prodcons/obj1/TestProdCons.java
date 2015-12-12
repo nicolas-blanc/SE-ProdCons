@@ -7,6 +7,7 @@ import java.util.Properties;
 
 import jus.poc.prodcons.Observateur;
 import jus.poc.prodcons.Simulateur;
+import jus.poc.prodcons.Tampon;
 
 public class TestProdCons extends Simulateur {
 
@@ -33,11 +34,25 @@ public class TestProdCons extends Simulateur {
 	 * et enfin créé un certain nombre de thread producteur et consommateur
 	 */
 	protected void run() throws Exception {
-		init("jus/poc/prodcons/options/options.xml");
+		//init("jus/poc/prodcons/options/options.xml");
+		
+		Tampon tampon = new ProdCons(10);
+		
+		Runnable producteur = new Producteur(tampon, observateur, 2, 1);
+		
+		
+		Runnable consommateur = new jus.poc.prodcons.obj1.Consommateur(tampon, observateur, 
+				2, 1);
+		
+		Thread thread1 = new Thread(producteur);
+		Thread thread2 = new Thread(consommateur);
+		thread1.start();
+		thread2.start();
 		
 	}
 
 	public static void main(String[] args) {
 		new TestProdCons(new Observateur()).start();
+		
 	}
 }

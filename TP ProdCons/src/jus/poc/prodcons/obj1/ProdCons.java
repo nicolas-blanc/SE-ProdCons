@@ -43,6 +43,7 @@ public class ProdCons implements Tampon {
 
 	@Override
 	public Message get(_Consommateur arg0) throws Exception, InterruptedException {
+		
 		while(nbplein == 0) { fc.attente(); }
 		
 		nbplein--;
@@ -69,6 +70,7 @@ public class ProdCons implements Tampon {
 		nbplein++;
 		
 		fc.reveiller();
+		
 	}
 
 	@Override
@@ -77,3 +79,4 @@ public class ProdCons implements Tampon {
 	}
 
 }
+
