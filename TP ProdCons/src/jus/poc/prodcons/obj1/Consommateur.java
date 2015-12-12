@@ -36,7 +36,7 @@ public class Consommateur extends Acteur implements _Consommateur{
 			try {
 				
 				MessageX message = (MessageX) tampon.get(this);
-				System.out.println("Retrieve message : " + message.toString());
+				System.out.println("Retrieve message : " + message.toString() + "\n Récupéré par : " + this.identification());
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

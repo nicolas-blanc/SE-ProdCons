@@ -34,6 +34,8 @@ public class Producteur extends Acteur implements _Producteur {
 	 * nombre suffisant de message, il s'arrète.
 	 */
 	public void run() {
+		System.out.println("Producteur : " + this.identification() + "// nombre de message : " + this.nombreDeMessages());
+		
 		for(int i = 0; i < nbMessageProduire; i++){
 		
 			MessageX message = new MessageX(this, i);

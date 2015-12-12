@@ -1,6 +1,7 @@
 package jus.poc.prodcons.obj1;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.InvalidPropertiesFormatException;
 import java.util.Map;
 import java.util.Properties;
@@ -38,17 +39,35 @@ public class TestProdCons extends Simulateur {
 		
 		Tampon tampon = new ProdCons(10);
 		
-		Runnable producteur = new Producteur(tampon, observateur, 2, 1);
+		ArrayList<Runnable> producteur = new ArrayList<Runnable>();
+		ArrayList<Runnable> consommateur = new ArrayList<Runnable>();
+		ArrayList<Thread> threadProducteur = new ArrayList<Thread>();
+		ArrayList<Thread> threadConsommateur = new ArrayList<Thread>();
 		
 		
-		Runnable consommateur = new jus.poc.prodcons.obj1.Consommateur(tampon, observateur, 
-				2, 1);
+		for (int i = 0; i < 10; i++) {
+			producteur.add(new Producteur(tampon, observateur, 2, 1));
+		}
 		
-		Thread thread1 = new Thread(producteur);
-		Thread thread2 = new Thread(consommateur);
-		thread1.start();
-		thread2.start();
+		for (int i = 0; i < 10; i++) {
+			consommateur.add(new Consommateur(tampon, observateur, 2, 1));
+		}
 		
+		for (Runnable p : producteur) {
+			threadProducteur.add(new Thread(p));
+		}
+		
+		for (Runnable c : consommateur) {
+			threadProducteur.add(new Thread(c));
+		}
+		
+		for (Thread thread : threadProducteur) {
+			thread.start();
+		}
+		
+		for (Thread thread : threadConsommateur) {
+			thread.start();
+		}
 	}
 
 	public static void main(String[] args) {
