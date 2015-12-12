@@ -1,4 +1,4 @@
-package jus.poc.prodcons.v;
+package jus.poc.prodcons.obj1;
 
 import java.io.IOException;
 import java.util.InvalidPropertiesFormatException;

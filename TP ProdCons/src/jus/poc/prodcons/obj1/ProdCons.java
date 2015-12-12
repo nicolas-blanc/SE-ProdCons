@@ -1,7 +1,7 @@
 /**
  * 
  */
-package jus.poc.prodcons.v;
+package jus.poc.prodcons.obj1;
 
 import jus.poc.prodcons.Message;
 import jus.poc.prodcons.Tampon;
@@ -12,11 +12,11 @@ import jus.poc.prodcons._Producteur;
  * @author nasheis
  *
  */
-public class Buffer implements Tampon {
+public class ProdCons implements Tampon {
 	
 	// private Message[]; Creer un tableau de Message de Taille t
 	
-	public Buffer() {
+	public ProdCons() {
 		// Message[] = new Message[]
 	}
 
