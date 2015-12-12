@@ -27,8 +27,12 @@ public class TestProdCons extends Simulateur {
 		super(observateur);
 	}
 
+	/**
+	 * Initialise selon le fichier option,
+	 * puis créé le buffer, avec un certain nombre d'espace libre
+	 * et enfin créé un certain nombre de thread producteur et consommateur
+	 */
 	protected void run() throws Exception {
-
 		init("jus/poc/prodcons/options/options.xml");
 		
 	}
