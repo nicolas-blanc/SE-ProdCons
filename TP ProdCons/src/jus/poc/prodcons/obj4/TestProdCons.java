@@ -54,7 +54,7 @@ public class TestProdCons extends Simulateur {
 
 		executor.shutdown();
 		executor.awaitTermination(10, TimeUnit.SECONDS);
-		System.out.println("All tasks finsished");
+		System.out.println("All tasks finished");
 
 	}
 
