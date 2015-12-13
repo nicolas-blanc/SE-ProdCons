@@ -37,7 +37,7 @@ public class TestProdCons extends Simulateur {
 	protected void run() throws Exception {
 		//init("jus/poc/prodcons/options/options.xml");
 		
-		Tampon tampon = new ProdCons(10);
+		Tampon tampon = new ProdConsSemaphore(10);
 		
 		ArrayList<Runnable> producteur = new ArrayList<Runnable>();
 		ArrayList<Runnable> consommateur = new ArrayList<Runnable>();
