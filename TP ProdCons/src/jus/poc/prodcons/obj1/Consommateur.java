@@ -1,6 +1,7 @@
 package jus.poc.prodcons.obj1;
 
 import jus.poc.prodcons.Acteur;
+import jus.poc.prodcons.Aleatoire;
 import jus.poc.prodcons.ControlException;
 import jus.poc.prodcons.Observateur;
 import jus.poc.prodcons.Tampon;
@@ -8,22 +9,44 @@ import jus.poc.prodcons._Consommateur;
 
 public class Consommateur extends Acteur implements _Consommateur{
 	
+	private TestProdCons testProdCons;
+	
 	private int nbMesssageLu;
 	private Tampon tampon;
 
-	public Consommateur(Tampon tampon, Observateur observateur,
-			int moyenneTempsDeTraitement, int deviationTempsDeTraitement)
-			throws ControlException {
+	public Consommateur(TestProdCons testProdCons, Tampon tampon, Observateur observateur, int moyenneTempsDeTraitement, int deviationTempsDeTraitement) throws ControlException {
 		super(Acteur.typeConsommateur, observateur, moyenneTempsDeTraitement, deviationTempsDeTraitement);
+		
+		this.testProdCons = testProdCons;
+		
 		this.tampon = tampon;
-		nbMesssageLu = jus.poc.prodcons.Aleatoire.valeur(moyenneTempsDeTraitement, deviationTempsDeTraitement);
+		nbMesssageLu = 0;
 	}
 
 	@Override
 	public int nombreDeMessages() {
 		return this.nbMesssageLu;
 	}
-
+	
+	private void traiterMessage() {
+		try {
+			MessageX message = (MessageX) tampon.get(this);
+			System.out.println("*** *** *** Retrieve message : " + message.toString() + " *** *** ***\n*** *** *** Récupéré par : " + this.identification());
+			sleep(Aleatoire.valeur(this.moyenneTempsDeTraitement, this.deviationTempsDeTraitement) * 100);
+		} catch (InterruptedException e) {
+			if (isInterrupted()) {
+				Thread.currentThread().interrupt(); // réinterruption sur soi-même
+				System.out.println("~~~~~~~~~~> Interruption dans traiterMessage()");
+			}
+			else {
+				System.out.println("// ----- Nouvelle Exception : InterruptedException IN Consommateur ----- //");
+				e.printStackTrace();
+			}
+		} catch (Exception e) {
+			System.out.println("// ----- Nouvelle Exception : Exception IN Consommateur ----- //");
+			e.printStackTrace();
+		}
+	}
 	
 	/**
 	 * Méthode lancé à la création du thread de Concommateur :
@@ -32,20 +55,19 @@ public class Consommateur extends Acteur implements _Consommateur{
 	 * puis récupère un nouveau message
 	 */
 	public void run() {
-		for (int i = 0 ; i < nbMesssageLu; i++){
-			try {
-				
-				MessageX message = (MessageX) tampon.get(this);
-				System.out.println("Retrieve message : " + message.toString() + "\n Récupéré par : " + this.identification());
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
+		System.out.println("Nouveau Consommateur : " + this.identification());
+		
+		while (this.testProdCons.getProd() != 0) {
+			System.out.println("Récupration nouveau message -- Consommateur : " + this.identification());
+			this.traiterMessage();
 		}
+		
+		if (isInterrupted()) {
+			Thread.currentThread().interrupt();
+			System.out.println("~~~~~~~~~~> Interruption dans run()");
+		}
+		
+		System.out.println("Fin de récupération de message -- Consommateur : " + this.identification());
 	}
 
 }

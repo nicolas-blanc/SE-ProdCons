@@ -1,7 +1,7 @@
 package jus.poc.prodcons.obj1;
 
 import jus.poc.prodcons.Message;
-import jus.poc.prodcons._Producteur;
+	import jus.poc.prodcons._Producteur;
 
 public class MessageX implements Message {
 

@@ -11,6 +11,10 @@ import jus.poc.prodcons.Simulateur;
 import jus.poc.prodcons.Tampon;
 
 public class TestProdCons extends Simulateur {
+	
+	int nbProd;
+	int nbCons;
+	int nbBuffer;
 
 	protected  void init(String file) throws InvalidPropertiesFormatException, IOException, IllegalArgumentException, IllegalAccessException, NoSuchFieldException, SecurityException {
 		Properties properties = new Properties();
@@ -27,6 +31,16 @@ public class TestProdCons extends Simulateur {
 
 	public TestProdCons(Observateur observateur) {
 		super(observateur);
+		nbProd = 5;
+		nbCons = 5;
+	}
+
+	public void enleverProducteur() {
+		this.nbProd--;
+	}
+	
+	public int getProd() {
+		return nbProd;
 	}
 
 	/**
@@ -37,7 +51,10 @@ public class TestProdCons extends Simulateur {
 	protected void run() throws Exception {
 		//init("jus/poc/prodcons/options/options.xml");
 		
-		Tampon tampon = new ProdConsSemaphore(10);
+		Tampon tampon = new ProdCons(3);
+		
+		int nbProd = 5;
+		int nbCons = 5;
 		
 		ArrayList<Runnable> producteur = new ArrayList<Runnable>();
 		ArrayList<Runnable> consommateur = new ArrayList<Runnable>();
@@ -45,12 +62,12 @@ public class TestProdCons extends Simulateur {
 		ArrayList<Thread> threadConsommateur = new ArrayList<Thread>();
 		
 		
-		for (int i = 0; i < 10; i++) {
-			producteur.add(new Producteur(tampon, observateur, 2, 1));
+		for (int i = 0; i < nbProd; i++) {
+			producteur.add(new Producteur(this, tampon, observateur, 10, 1, 5, 1));
 		}
 		
-		for (int i = 0; i < 10; i++) {
-			consommateur.add(new Consommateur(tampon, observateur, 2, 1));
+		for (int i = 0; i < nbCons; i++) {
+			consommateur.add(new Consommateur(this, tampon, observateur, 10, 1));
 		}
 		
 		for (Runnable p : producteur) {
@@ -68,6 +85,25 @@ public class TestProdCons extends Simulateur {
 		for (Thread thread : threadConsommateur) {
 			thread.start();
 		}
+		
+		System.out.println("// ----- ----- \\ Début boucle avant fin Producteur // ----- ----- \\");
+		
+/*
+		while (this.nbProd != 0) {
+//			System.out.println("========================================> Nombre de Producteur restant : " + this.nbProd);
+		}
+		
+		System.out.println("// ----- ----- \\ Plus de Producteur // ----- ----- \\");
+
+		int i = 0;
+		for (Thread thread : threadConsommateur) {
+			System.out.println("// ***** ***** \\ Interruption thread : " + i + " // ***** ***** \\");
+			thread.interrupt();
+			i++;
+		}
+*/
+		
+		System.out.println("// ----- ----- \\ Fin de TestProdCons // ----- ----- \\");
 	}
 
 	public static void main(String[] args) {

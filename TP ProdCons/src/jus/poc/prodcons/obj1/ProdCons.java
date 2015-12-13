@@ -20,8 +20,6 @@ public class ProdCons implements Tampon {
 	private int in, out;
 	private int nbplein, nbvide;
 	
-	private File fc, fp;
-	
 	public ProdCons(int taille) {
 		tailleBuffer = taille;
 		
@@ -31,9 +29,6 @@ public class ProdCons implements Tampon {
 		out = 0;
 		
 		buffer = new Message[tailleBuffer];
-		
-		fc = new File();
-		fp = new File();
 	}
 
 	@Override
@@ -42,35 +37,35 @@ public class ProdCons implements Tampon {
 	}
 
 	@Override
-	public Message get(_Consommateur arg0) throws Exception, InterruptedException {
-		
-		while(nbplein == 0) { fc.attente(); }
+	public synchronized Message get(_Consommateur arg0) throws Exception, InterruptedException {
+		while(nbplein == 0) { wait(); }
 		
 		nbplein--;
 		
 		Message m = buffer[out];
+		System.out.println("-----> Message Récupéré => " + m.toString() );
 		out = (out + 1) % tailleBuffer;
 		
 		nbvide++;
 		
-		fp.reveiller();
+		notifyAll();
 		
 		return m;
 	}
 
 	@Override
-	public void put(_Producteur arg0, Message arg1) throws Exception, InterruptedException {
-		while (nbvide == 0) { fp.attente(); }
+	public synchronized void put(_Producteur arg0, Message arg1) throws Exception, InterruptedException {
+		while (nbvide == 0) { wait(); }
 		
 		nbvide--;
 		
 		buffer[in] = arg1;
+		System.out.println("-----> Message Inséré => " + arg1.toString() );
 		in = (in + 1) % tailleBuffer;
 		
 		nbplein++;
 		
-		fc.reveiller();
-		
+		notifyAll();	
 	}
 
 	@Override
