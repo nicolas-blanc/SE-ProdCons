@@ -41,7 +41,6 @@ public class TestProdCons extends Simulateur {
 		
 		Runnable producteur = new Producteur(tampon, observateur, 2, 1);
 		
-		
 		Runnable consommateur = new jus.poc.prodcons.obj1.Consommateur(tampon, observateur, 
 				2, 1);
 		

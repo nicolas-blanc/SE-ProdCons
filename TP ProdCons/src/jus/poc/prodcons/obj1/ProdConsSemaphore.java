@@ -3,12 +3,11 @@
  */
 package jus.poc.prodcons.obj1;
 
-import java.util.concurrent.Semaphore;
-
 import jus.poc.prodcons.Message;
 import jus.poc.prodcons.Tampon;
 import jus.poc.prodcons._Consommateur;
 import jus.poc.prodcons._Producteur;
+import jus.poc.prodcons.obj2.SemaphorePropre;
 
 public class ProdConsSemaphore implements Tampon {
 	
@@ -16,13 +15,13 @@ public class ProdConsSemaphore implements Tampon {
 	
 	private int tailleBuffer;
 	private int in, out;
-	Semaphore semP = new Semaphore(0); //un semaphore pour verifier le nombre de places occupees dans le buffer
-	Semaphore mutex = new Semaphore(1); //un semaphore pour l'exclusion mutuelle
-	Semaphore semV;
+	SemaphorePropre semP = new SemaphorePropre(0); //un semaphore pour verifier le nombre de places occupees dans le buffer
+	SemaphorePropre mutex = new SemaphorePropre(1); //un semaphore pour l'exclusion mutuelle
+	SemaphorePropre semV;
 	
 	public ProdConsSemaphore(int taille) {
 		tailleBuffer = taille;
-		semV = new Semaphore(tailleBuffer); //semaphore pour verifier le nombre de places libres dans le buffer
+		semV = new SemaphorePropre(tailleBuffer); //semaphore pour verifier le nombre de places libres dans le buffer
 		in = 0;
 		out = 0;
 		buffer = new Message[tailleBuffer];
