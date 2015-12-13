@@ -1,4 +1,4 @@
-package jus.poc.prodcons.obj1;
+package jus.poc.prodcons.obj4;
 
 import jus.poc.prodcons.Acteur;
 import jus.poc.prodcons.ControlException;
@@ -36,7 +36,7 @@ public class Consommateur extends Acteur implements _Consommateur{
 			try {
 				
 				MessageX message = (MessageX) tampon.get(this);
-				System.out.println("Retrieve message : " + message.toString() + "\n Récupéré par : " + this.identification());
+				System.out.println("Retrieve message : " + message.getMessageId());
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
