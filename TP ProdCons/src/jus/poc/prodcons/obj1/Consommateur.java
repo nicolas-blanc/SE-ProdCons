@@ -28,7 +28,7 @@ public class Consommateur extends Acteur implements _Consommateur{
 		return this.nbMesssageLu;
 	}
 	
-	private void traiterMessage() {
+	private synchronized void traiterMessage() {
 		try {
 			MessageX message = (MessageX) tampon.get(this);
 			System.out.println("*** *** *** Retrieve message : " + message.toString() + " *** *** ***\n*** *** *** Récupéré par : " + this.identification());
@@ -57,7 +57,7 @@ public class Consommateur extends Acteur implements _Consommateur{
 	public void run() {
 		System.out.println("Nouveau Consommateur : " + this.identification());
 		
-		while (this.testProdCons.getProd() != 0) {
+		while (this.tampon.enAttente() != 0 || this.testProdCons.getProd() != 0) {
 			System.out.println("Récupration nouveau message -- Consommateur : " + this.identification());
 			this.traiterMessage();
 		}
@@ -67,7 +67,7 @@ public class Consommateur extends Acteur implements _Consommateur{
 			System.out.println("~~~~~~~~~~> Interruption dans run()");
 		}
 		
-		System.out.println("Nombre de message restant dans le Tampon : " + this.tampon.enAttente());
+		System.out.println("Nombre de message restant dans le Tampon : " + this.tampon.enAttente() + " // Nombre de Producteur : " + this.testProdCons.getProd());
 		System.out.println("Fin de récupération de message -- Consommateur : " + this.identification());
 	}
 

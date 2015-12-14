@@ -28,7 +28,7 @@ public class Producteur extends Acteur implements _Producteur {
 		return this.nbMessageProduire;
 	}
 	
-	private void production(int numMessage) {
+	private synchronized void production(int numMessage) {
 		MessageX message = new MessageX(this, numMessage);
 		try {
 			sleep(Aleatoire.valeur(this.moyenneTempsDeTraitement, this.deviationTempsDeTraitement) * 100);

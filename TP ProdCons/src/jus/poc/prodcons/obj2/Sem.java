@@ -3,6 +3,7 @@ package jus.poc.prodcons.obj2;
 public class Sem {
 	
 	private int valeur;
+	@SuppressWarnings("unused")
 	private int limite;
 	
 	public Sem(int limite) {
