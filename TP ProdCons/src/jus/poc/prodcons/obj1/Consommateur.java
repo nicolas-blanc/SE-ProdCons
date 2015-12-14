@@ -9,15 +9,11 @@ import jus.poc.prodcons._Consommateur;
 
 public class Consommateur extends Acteur implements _Consommateur{
 	
-	private TestProdCons testProdCons;
-	
 	private int nbMesssageLu;
 	private Tampon tampon;
 
 	public Consommateur(TestProdCons testProdCons, Tampon tampon, Observateur observateur, int moyenneTempsDeTraitement, int deviationTempsDeTraitement) throws ControlException {
 		super(Acteur.typeConsommateur, observateur, moyenneTempsDeTraitement, deviationTempsDeTraitement);
-		
-		this.testProdCons = testProdCons;
 		
 		this.tampon = tampon;
 		nbMesssageLu = 0;
@@ -28,11 +24,13 @@ public class Consommateur extends Acteur implements _Consommateur{
 		return this.nbMesssageLu;
 	}
 	
-	private synchronized void traiterMessage() {
+	private void traiterMessage() {
 		try {
 			MessageX message = (MessageX) tampon.get(this);
-			System.out.println("*** *** *** Retrieve message : " + message.toString() + " *** *** ***\n*** *** *** Récupéré par : " + this.identification());
-			sleep(Aleatoire.valeur(this.moyenneTempsDeTraitement, this.deviationTempsDeTraitement) * 100);
+			if (message != null) {
+				System.out.println("*** *** *** Retrieve message : " + message.toString() + " *** *** ***\n*** *** *** Récupéré par : " + this.identification());
+				sleep(Aleatoire.valeur(this.moyenneTempsDeTraitement, this.deviationTempsDeTraitement) * 100);				
+			}
 		} catch (InterruptedException e) {
 			if (isInterrupted()) {
 				Thread.currentThread().interrupt(); // réinterruption sur soi-même
@@ -57,9 +55,9 @@ public class Consommateur extends Acteur implements _Consommateur{
 	public void run() {
 		System.out.println("Nouveau Consommateur : " + this.identification());
 		
-		while (this.tampon.enAttente() != 0 || this.testProdCons.getProd() != 0) {
-			System.out.println("Récupration nouveau message -- Consommateur : " + this.identification());
-			this.traiterMessage();
+		while (!((ProdCons) this.tampon).getStop() || this.tampon.enAttente() != 0) {
+				System.out.println("Récupération nouveau message -- Consommateur : " + this.identification());
+				this.traiterMessage();				
 		}
 		
 		if (isInterrupted()) {
@@ -67,7 +65,7 @@ public class Consommateur extends Acteur implements _Consommateur{
 			System.out.println("~~~~~~~~~~> Interruption dans run()");
 		}
 		
-		System.out.println("Nombre de message restant dans le Tampon : " + this.tampon.enAttente() + " // Nombre de Producteur : " + this.testProdCons.getProd());
+		System.out.println("Nombre de message restant dans le Tampon : " + this.tampon.enAttente());
 		System.out.println("Fin de récupération de message -- Consommateur : " + this.identification());
 	}
 

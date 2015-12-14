@@ -16,6 +16,14 @@ public class TestProdCons extends Simulateur {
 	int nbProd;
 	int nbCons;
 	int nbBuffer;
+	int tempsMoyenProduction;
+	int deviationTempsMoyenProduction;
+	int tempsMoyenConsommation;
+	int deviationTempsMoyenConsommation;
+	int nombreMoyenDeProduction;
+	int deviationNombreMoyenDeProduction;
+	int nombreMoyenNbExemplaire;
+	int deviationNombreMoyenNbExemplaire;
 
 	protected  void init(String file) throws InvalidPropertiesFormatException, IOException, IllegalArgumentException, IllegalAccessException, NoSuchFieldException, SecurityException {
 		Properties properties = new Properties();
@@ -32,9 +40,16 @@ public class TestProdCons extends Simulateur {
 
 	public TestProdCons(Observateur observateur) {
 		super(observateur);
-		nbProd = 5;
-		nbCons = 5;
-		nbBuffer = 1;
+		try {
+			init("jus/poc/prodcons/options/options.xml");
+		} catch (IllegalArgumentException
+				| IllegalAccessException | NoSuchFieldException
+				| SecurityException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+//		init(nbProd, nbCons, nbBuffer);
 	}
 	
 	protected void createThread(Tampon tampon) throws ControlException {
@@ -73,9 +88,7 @@ public class TestProdCons extends Simulateur {
 	 * puis créé le buffer, avec un certain nombre d'espace libre
 	 * et enfin créé un certain nombre de thread producteur et consommateur
 	 */
-	protected void run() throws Exception {
-		//init("jus/poc/prodcons/options/options.xml");
-		
+	protected void run() throws Exception {		
 		Tampon tampon = new ProdCons(3);
 		
 		this.createThread(tampon);
@@ -96,12 +109,15 @@ public class TestProdCons extends Simulateur {
 			i++;
 		}
 */
-		
 		System.out.println("// ----- ----- \\ Fin de TestProdCons // ----- ----- \\");
 	}
 	
-	public void enleverProducteur() {
+	public void enleverProducteur(Tampon tampon) {
 		this.nbProd--;
+		if (nbProd == 0) {
+			System.out.println("// ----- ----- \\ Fin du programme : nbprod = " + nbProd + "// ----- ----- \\");
+			((ProdCons) tampon).finProg();
+		}
 	}
 	
 	public int getProd() {

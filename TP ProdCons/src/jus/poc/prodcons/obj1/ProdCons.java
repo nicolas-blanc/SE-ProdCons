@@ -19,6 +19,9 @@ public class ProdCons implements Tampon {
 	protected int tailleBuffer;
 	protected int in, out;
 	protected int nbplein;
+	
+	protected boolean stop;
+	
 	private int nbvide;
 	
 	public ProdCons(int taille) {
@@ -30,6 +33,18 @@ public class ProdCons implements Tampon {
 		out = 0;
 		
 		buffer = new Message[tailleBuffer];
+		
+		stop = false;
+	}
+	
+	public synchronized void finProg() {
+		stop = true;
+		System.out.println("// ----- || -----\\ Changer variable stop // ----- || -----\\");
+		notifyAll();
+	}
+	
+	public boolean getStop(){
+		return stop;
 	}
 
 	@Override
@@ -39,40 +54,50 @@ public class ProdCons implements Tampon {
 
 	@Override
 	public synchronized Message get(_Consommateur arg0) throws Exception, InterruptedException {
-		while(nbplein == 0) { wait(); }
+		while(nbplein == 0 && !stop) { wait(); }
 		
-		nbplein--;
-		
-		Message m = buffer[out];
-		System.out.println("-----> Message Récupéré => " + m.toString() );
-		out = (out + 1) % tailleBuffer;
-		
-		nbvide++;
-		
-		notifyAll();
-		
-		return m;
+		if(!stop) {
+			synchronized (buffer) {		
+				nbplein--;
+				
+				Message m = buffer[out];
+				System.out.println("-----> Message Récupéré => " + m.toString() );
+				out = (out + 1) % tailleBuffer;
+				
+				nbvide++;
+				
+				notifyAll();
+			
+				return m;
+			}
+		} else {
+			return null;
+		}
+			
 	}
 
 	@Override
 	public synchronized void put(_Producteur arg0, Message arg1) throws Exception, InterruptedException {
-		while (nbvide == 0) { wait(); }
-		
-		nbvide--;
-		
-		buffer[in] = arg1;
-		System.out.println("-----> Message Inséré => " + arg1.toString() );
-		in = (in + 1) % tailleBuffer;
-		
-		nbplein++;
-		
-		notifyAll();	
+		while (nbvide == 0 && !stop) { wait(); }
+
+		if(!stop) {
+			synchronized (buffer) {
+				nbvide--;
+				
+				buffer[in] = arg1;
+				System.out.println("-----> Message Inséré => " + arg1.toString() );
+				in = (in + 1) % tailleBuffer;
+			
+				nbplein++;
+				
+				notifyAll();
+			}
+		}
 	}
 
 	@Override
 	public int taille() {
 		return buffer.length;
 	}
-
 }
 

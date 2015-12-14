@@ -28,7 +28,7 @@ public class Producteur extends Acteur implements _Producteur {
 		return this.nbMessageProduire;
 	}
 	
-	private synchronized void production(int numMessage) {
+	private void production(int numMessage) {
 		MessageX message = new MessageX(this, numMessage);
 		try {
 			sleep(Aleatoire.valeur(this.moyenneTempsDeTraitement, this.deviationTempsDeTraitement) * 100);
@@ -53,9 +53,9 @@ public class Producteur extends Acteur implements _Producteur {
 			production(i);
 		}
 		
-		this.testProdCons.enleverProducteur();
+		this.testProdCons.enleverProducteur(this.tampon);
 		
-		System.out.println("Nombre de message restant dans le Tampon : " + this.tampon.enAttente());
+		System.out.println("Nombre de message restant dans le Tampon : " + this.tampon.enAttente() + " // Nombre de producteurs restant : " + this.testProdCons.getProd());
 		System.out.println("Fin de production de message -- Producteur : " + this.identification());
 	}
 
