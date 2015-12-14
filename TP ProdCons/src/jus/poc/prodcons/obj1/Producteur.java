@@ -55,6 +55,7 @@ public class Producteur extends Acteur implements _Producteur {
 		
 		this.testProdCons.enleverProducteur();
 		
+		System.out.println("Nombre de message restant dans le Tampon : " + this.tampon.enAttente());
 		System.out.println("Fin de production de message -- Producteur : " + this.identification());
 	}
 

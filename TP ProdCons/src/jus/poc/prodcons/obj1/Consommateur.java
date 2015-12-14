@@ -67,6 +67,7 @@ public class Consommateur extends Acteur implements _Consommateur{
 			System.out.println("~~~~~~~~~~> Interruption dans run()");
 		}
 		
+		System.out.println("Nombre de message restant dans le Tampon : " + this.tampon.enAttente());
 		System.out.println("Fin de récupération de message -- Consommateur : " + this.identification());
 	}
 

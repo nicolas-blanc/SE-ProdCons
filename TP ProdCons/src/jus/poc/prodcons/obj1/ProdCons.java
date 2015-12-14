@@ -14,11 +14,12 @@ import jus.poc.prodcons._Producteur;
  */
 public class ProdCons implements Tampon {
 	
-	private Message[] buffer; //Creer un tableau de Message de Taille t
+	protected Message[] buffer; //Creer un tableau de Message de Taille t
 	
-	private int tailleBuffer;
-	private int in, out;
-	private int nbplein, nbvide;
+	protected int tailleBuffer;
+	protected int in, out;
+	protected int nbplein;
+	private int nbvide;
 	
 	public ProdCons(int taille) {
 		tailleBuffer = taille;

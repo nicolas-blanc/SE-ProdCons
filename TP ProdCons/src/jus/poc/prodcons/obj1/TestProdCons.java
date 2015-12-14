@@ -6,6 +6,7 @@ import java.util.InvalidPropertiesFormatException;
 import java.util.Map;
 import java.util.Properties;
 
+import jus.poc.prodcons.ControlException;
 import jus.poc.prodcons.Observateur;
 import jus.poc.prodcons.Simulateur;
 import jus.poc.prodcons.Tampon;
@@ -33,34 +34,14 @@ public class TestProdCons extends Simulateur {
 		super(observateur);
 		nbProd = 5;
 		nbCons = 5;
-	}
-
-	public void enleverProducteur() {
-		this.nbProd--;
+		nbBuffer = 1;
 	}
 	
-	public int getProd() {
-		return nbProd;
-	}
-
-	/**
-	 * Initialise selon le fichier option,
-	 * puis créé le buffer, avec un certain nombre d'espace libre
-	 * et enfin créé un certain nombre de thread producteur et consommateur
-	 */
-	protected void run() throws Exception {
-		//init("jus/poc/prodcons/options/options.xml");
-		
-		Tampon tampon = new ProdCons(3);
-		
-		int nbProd = 5;
-		int nbCons = 5;
-		
+	protected void createThread(Tampon tampon) throws ControlException {
 		ArrayList<Runnable> producteur = new ArrayList<Runnable>();
 		ArrayList<Runnable> consommateur = new ArrayList<Runnable>();
 		ArrayList<Thread> threadProducteur = new ArrayList<Thread>();
 		ArrayList<Thread> threadConsommateur = new ArrayList<Thread>();
-		
 		
 		for (int i = 0; i < nbProd; i++) {
 			producteur.add(new Producteur(this, tampon, observateur, 10, 1, 5, 1));
@@ -85,10 +66,23 @@ public class TestProdCons extends Simulateur {
 		for (Thread thread : threadConsommateur) {
 			thread.start();
 		}
+	}
+
+	/**
+	 * Initialise selon le fichier option,
+	 * puis créé le buffer, avec un certain nombre d'espace libre
+	 * et enfin créé un certain nombre de thread producteur et consommateur
+	 */
+	protected void run() throws Exception {
+		//init("jus/poc/prodcons/options/options.xml");
 		
-		System.out.println("// ----- ----- \\ Début boucle avant fin Producteur // ----- ----- \\");
+		Tampon tampon = new ProdCons(3);
+		
+		this.createThread(tampon);
 		
 /*
+		System.out.println("// ----- ----- \\ Début boucle avant fin Producteur // ----- ----- \\");
+		
 		while (this.nbProd != 0) {
 //			System.out.println("========================================> Nombre de Producteur restant : " + this.nbProd);
 		}
@@ -105,8 +99,17 @@ public class TestProdCons extends Simulateur {
 		
 		System.out.println("// ----- ----- \\ Fin de TestProdCons // ----- ----- \\");
 	}
+	
+	public void enleverProducteur() {
+		this.nbProd--;
+	}
+	
+	public int getProd() {
+		return nbProd;
+	}
 
 	public static void main(String[] args) {
+		System.out.println("// ----- ----- \\ Lancement programme : Obj1 // ----- ----- \\");
 		new TestProdCons(new Observateur()).start();
 		
 	}

@@ -3,61 +3,49 @@
  */
 package jus.poc.prodcons.obj2;
 
-import java.util.concurrent.Semaphore;
-
 import jus.poc.prodcons.Message;
-import jus.poc.prodcons.Tampon;
 import jus.poc.prodcons._Consommateur;
 import jus.poc.prodcons._Producteur;
+import jus.poc.prodcons.obj1.ProdCons;
 
-public class ProdConsSemaphore implements Tampon {
+public class ProdConsSemaphore extends ProdCons {
 	
-	private Message[] buffer; //Creer un tableau de Message de Taille t
-	
-	private int tailleBuffer;
-	private int in, out;
-	Semaphore semP = new Semaphore(0); //un semaphore pour verifier le nombre de places occupees dans le buffer
-	Semaphore mutex = new Semaphore(1); //un semaphore pour l'exclusion mutuelle
-	Semaphore semV;
+	private Sem semP = new Sem(0); //un semaphore pour verifier le nombre de places occupees dans le buffer
+	private Sem mutex = new Sem(1); //un semaphore pour l'exclusion mutuelle
+	private Sem semV;
 	
 	public ProdConsSemaphore(int taille) {
-		tailleBuffer = taille;
-		semV = new Semaphore(tailleBuffer); //semaphore pour verifier le nombre de places libres dans le buffer
-		in = 0;
-		out = 0;
-		buffer = new Message[tailleBuffer];
-	}
-
-	@Override
-	public int enAttente() {
-		return semP.availablePermits();
+		super(taille);
+		semV = new Sem(tailleBuffer); //semaphore pour verifier le nombre de places libres dans le buffer
 	}
 
 	@Override
 	public Message get(_Consommateur arg0) throws Exception, InterruptedException {
-		
-		semP.acquire(); //decrementer le nombre de places occupees
-		mutex.acquire(); // pour l'exclusion mutuelle, semaphore binaire
+		semP.P(); //decrementer le nombre de places occupees
+		mutex.P(); // pour l'exclusion mutuelle, semaphore binaire
+
 		Message m = buffer[out];
 		out = (out + 1) % tailleBuffer;
-		mutex.release();
-		semV.release(); //incrementer le nombre de places libres
+		
+		nbplein--;
+		
+		mutex.V();
+		semV.V(); //incrementer le nombre de places libres
+		
 		return m;
 	}
 	@Override
 	public void put(_Producteur arg0, Message arg1) throws Exception, InterruptedException {
-		semV.acquire(); //decrementer le nombre de places libres
-		mutex.acquire();
+		semV.P(); //decrementer le nombre de places libres
+		mutex.P();
+		
 		buffer[in] = arg1;
 		in = (in + 1) % tailleBuffer;
-		mutex.release();
-		semP.release(); //incrementer le nombre de places occupees
-}
-
-	@Override
-	public int taille() {
-		return buffer.length;
+		
+		nbplein++;
+		
+		mutex.V();
+		semP.V(); //incrementer le nombre de places occupees
 	}
-
 }
 
