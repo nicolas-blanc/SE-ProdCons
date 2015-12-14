@@ -12,7 +12,7 @@ public class Consommateur extends Acteur implements _Consommateur{
 	private int nbMesssageLu;
 	private Tampon tampon;
 
-	public Consommateur(TestProdCons testProdCons, Tampon tampon, Observateur observateur, int moyenneTempsDeTraitement, int deviationTempsDeTraitement) throws ControlException {
+	public Consommateur(Tampon tampon, Observateur observateur, int moyenneTempsDeTraitement, int deviationTempsDeTraitement) throws ControlException {
 		super(Acteur.typeConsommateur, observateur, moyenneTempsDeTraitement, deviationTempsDeTraitement);
 		
 		this.tampon = tampon;
@@ -64,6 +64,8 @@ public class Consommateur extends Acteur implements _Consommateur{
 			Thread.currentThread().interrupt();
 			System.out.println("~~~~~~~~~~> Interruption dans run()");
 		}
+		
+		((ProdCons) this.tampon).enleverConsommateur();
 		
 		System.out.println("Nombre de message restant dans le Tampon : " + this.tampon.enAttente());
 		System.out.println("Fin de récupération de message -- Consommateur : " + this.identification());

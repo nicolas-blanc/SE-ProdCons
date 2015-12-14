@@ -9,15 +9,11 @@ import jus.poc.prodcons._Producteur;
 
 public class Producteur extends Acteur implements _Producteur {
 
-	private TestProdCons testProdCons;
-	
 	private int nbMessageProduire;
 	private Tampon tampon;
 
-	public Producteur(TestProdCons testProdCons, Tampon tampon, Observateur observateur, int moyenneTempsDeTraitement, int deviationTempsDeTraitement, int nombreMoyenDeProduction, int deviationNombreMoyenDeProduction) throws ControlException {
+	public Producteur(Tampon tampon, Observateur observateur, int moyenneTempsDeTraitement, int deviationTempsDeTraitement, int nombreMoyenDeProduction, int deviationNombreMoyenDeProduction) throws ControlException {
 		super(Acteur.typeProducteur, observateur, moyenneTempsDeTraitement, deviationTempsDeTraitement);
-		
-		this.testProdCons = testProdCons;
 		
 		this.tampon = tampon;
 		this.nbMessageProduire = Aleatoire.valeur(nombreMoyenDeProduction, deviationNombreMoyenDeProduction);
@@ -53,9 +49,9 @@ public class Producteur extends Acteur implements _Producteur {
 			production(i);
 		}
 		
-		this.testProdCons.enleverProducteur(this.tampon);
+		((ProdCons) this.tampon).enleverProducteur();
 		
-		System.out.println("Nombre de message restant dans le Tampon : " + this.tampon.enAttente() + " // Nombre de producteurs restant : " + this.testProdCons.getProd());
+		System.out.println("Nombre de message restant dans le Tampon : " + this.tampon.enAttente() + " // Nombre de producteurs restant : " + ((ProdCons) this.tampon).getProd());
 		System.out.println("Fin de production de message -- Producteur : " + this.identification());
 	}
 

@@ -13,17 +13,17 @@ import jus.poc.prodcons.Tampon;
 
 public class TestProdCons extends Simulateur {
 	
-	int nbProd;
-	int nbCons;
-	int nbBuffer;
-	int tempsMoyenProduction;
-	int deviationTempsMoyenProduction;
-	int tempsMoyenConsommation;
-	int deviationTempsMoyenConsommation;
-	int nombreMoyenDeProduction;
-	int deviationNombreMoyenDeProduction;
-	int nombreMoyenNbExemplaire;
-	int deviationNombreMoyenNbExemplaire;
+	protected int nbProd;
+	protected int nbCons;
+	protected int nbBuffer;
+	protected int tempsMoyenProduction;
+	protected int deviationTempsMoyenProduction;
+	protected int tempsMoyenConsommation;
+	protected int deviationTempsMoyenConsommation;
+	protected int nombreMoyenDeProduction;
+	protected int deviationNombreMoyenDeProduction;
+	protected int nombreMoyenNbExemplaire;
+	protected int deviationNombreMoyenNbExemplaire;
 
 	protected  void init(String file) throws InvalidPropertiesFormatException, IOException, IllegalArgumentException, IllegalAccessException, NoSuchFieldException, SecurityException {
 		Properties properties = new Properties();
@@ -48,8 +48,6 @@ public class TestProdCons extends Simulateur {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-//		init(nbProd, nbCons, nbBuffer);
 	}
 	
 	protected void createThread(Tampon tampon) throws ControlException {
@@ -59,11 +57,11 @@ public class TestProdCons extends Simulateur {
 		ArrayList<Thread> threadConsommateur = new ArrayList<Thread>();
 		
 		for (int i = 0; i < nbProd; i++) {
-			producteur.add(new Producteur(this, tampon, observateur, 10, 1, 5, 1));
+			producteur.add(new Producteur(tampon, observateur, tempsMoyenProduction, deviationTempsMoyenProduction, nombreMoyenDeProduction, deviationNombreMoyenDeProduction));
 		}
 		
 		for (int i = 0; i < nbCons; i++) {
-			consommateur.add(new Consommateur(this, tampon, observateur, 10, 1));
+			consommateur.add(new Consommateur(tampon, observateur, tempsMoyenConsommation, deviationTempsMoyenConsommation));
 		}
 		
 		for (Runnable p : producteur) {
@@ -89,7 +87,7 @@ public class TestProdCons extends Simulateur {
 	 * et enfin créé un certain nombre de thread producteur et consommateur
 	 */
 	protected void run() throws Exception {		
-		Tampon tampon = new ProdCons(3);
+		Tampon tampon = new ProdCons(nbBuffer,nbProd,nbCons);
 		
 		this.createThread(tampon);
 		
@@ -110,18 +108,6 @@ public class TestProdCons extends Simulateur {
 		}
 */
 		System.out.println("// ----- ----- \\ Fin de TestProdCons // ----- ----- \\");
-	}
-	
-	public void enleverProducteur(Tampon tampon) {
-		this.nbProd--;
-		if (nbProd == 0) {
-			System.out.println("// ----- ----- \\ Fin du programme : nbprod = " + nbProd + "// ----- ----- \\");
-			((ProdCons) tampon).finProg();
-		}
-	}
-	
-	public int getProd() {
-		return nbProd;
 	}
 
 	public static void main(String[] args) {

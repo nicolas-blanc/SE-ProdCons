@@ -22,9 +22,12 @@ public class ProdCons implements Tampon {
 	
 	protected boolean stop;
 	
+	protected int nbProd;
+	protected int nbCons;
+	
 	private int nbvide;
 	
-	public ProdCons(int taille) {
+	public ProdCons(int taille, int nbProd, int nbCons) {
 		tailleBuffer = taille;
 		
 		nbvide = tailleBuffer;
@@ -34,12 +37,35 @@ public class ProdCons implements Tampon {
 		
 		buffer = new Message[tailleBuffer];
 		
+		this.nbProd = nbProd;
+		this.nbCons = nbCons;
 		stop = false;
 	}
 	
-	public synchronized void finProg() {
+	public int getProd() {
+		return nbProd;
+	}
+	
+	public int getCons() {
+		return nbCons;
+	}
+	
+	public void enleverProducteur() {
+		this.nbProd--;
+		if (nbProd == 0) {
+			System.out.println("// ----- ----- \\ Fin du programme : nbprod = " + nbProd + "// ----- ----- \\");
+			this.finProg();
+		}
+	}
+	
+	public void enleverConsommateur() {
+		this.nbCons--;
+	}
+	
+	private synchronized void finProg() {
 		stop = true;
 		System.out.println("// ----- || -----\\ Changer variable stop // ----- || -----\\");
+		System.out.println("// ----- || -----\\ ProdConsSemaphore // ----- || -----\\ ");
 		notifyAll();
 	}
 	
@@ -73,7 +99,6 @@ public class ProdCons implements Tampon {
 		} else {
 			return null;
 		}
-			
 	}
 
 	@Override
