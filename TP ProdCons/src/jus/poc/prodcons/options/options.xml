@@ -4,15 +4,15 @@
 	<comment>
 		Cette configuration ...
 	</comment>
-	<entry key="nbProd">1</entry>
+	<entry key="nbProd">5</entry>
 	<entry key="nbCons">10</entry>
-	<entry key="nbBuffer">1</entry>
+	<entry key="nbBuffer">3</entry>
 	<entry key="tempsMoyenProduction">10</entry>
-	<entry key="deviationTempsMoyenProduction">1</entry>
+	<entry key="deviationTempsMoyenProduction">5</entry>
 	<entry key="tempsMoyenConsommation">10</entry>
-	<entry key="deviationTempsMoyenConsommation">1</entry>
-	<entry key="nombreMoyenDeProduction">5</entry>
-	<entry key="deviationNombreMoyenDeProduction">1</entry>
+	<entry key="deviationTempsMoyenConsommation">5</entry>
+	<entry key="nombreMoyenDeProduction">3</entry>
+	<entry key="deviationNombreMoyenDeProduction">2</entry>
 	<entry key="nombreMoyenNbExemplaire">5</entry>
 	<entry key="deviationNombreMoyenNbExemplaire">3</entry>
 </properties>
