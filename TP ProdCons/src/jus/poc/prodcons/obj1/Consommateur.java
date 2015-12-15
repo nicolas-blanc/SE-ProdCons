@@ -56,8 +56,9 @@ public class Consommateur extends Acteur implements _Consommateur{
 		System.out.println("Nouveau Consommateur : " + this.identification());
 		
 		while (!((ProdCons) this.tampon).getStop() || this.tampon.enAttente() != 0) {
-				System.out.println("Récupération nouveau message -- Consommateur : " + this.identification());
-				this.traiterMessage();				
+//			System.out.println("Récupération nouveau message -- Consommateur : " + this.identification() + " // Tampon.getStop : " + !((ProdCons) this.tampon).getStop() + " -- NbProd : " + ((ProdCons) tampon).getProd() + " -- Tampon.enAttente : " + this.tampon.enAttente());
+			System.out.println("Récupération nouveau message -- Consommateur : " + this.identification());
+			this.traiterMessage();				
 		}
 		
 		if (isInterrupted()) {

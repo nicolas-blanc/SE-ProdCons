@@ -9,8 +9,8 @@ public class MessageX implements Message {
 	 * Permet de connaitre le producteur qui à créé le message ainsi que le nombre de message créé par celui-ci
 	 * Et de savoir quel consommateur l'a récupéré
 	 */
-	private int producteur;
-	private int num;
+	protected int producteur;
+	protected int num;
 	
 	public MessageX(_Producteur arg0, int arg1) {
 		producteur = arg0.identification();

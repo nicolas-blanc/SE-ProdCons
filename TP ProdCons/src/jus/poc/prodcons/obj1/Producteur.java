@@ -9,8 +9,8 @@ import jus.poc.prodcons._Producteur;
 
 public class Producteur extends Acteur implements _Producteur {
 
-	private int nbMessageProduire;
-	private Tampon tampon;
+	protected int nbMessageProduire;
+	protected Tampon tampon;
 
 	public Producteur(Tampon tampon, Observateur observateur, int moyenneTempsDeTraitement, int deviationTempsDeTraitement, int nombreMoyenDeProduction, int deviationNombreMoyenDeProduction) throws ControlException {
 		super(Acteur.typeProducteur, observateur, moyenneTempsDeTraitement, deviationTempsDeTraitement);

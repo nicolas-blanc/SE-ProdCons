@@ -10,9 +10,9 @@ import jus.poc.prodcons.obj1.ProdCons;
 
 public class ProdConsSemaphore extends ProdCons {
 	
-	private Sem semP = new Sem(0); //un semaphore pour verifier le nombre de places occupees dans le buffer
-	private Sem mutex = new Sem(1); //un semaphore pour l'exclusion mutuelle
-	private Sem semV;
+	protected Sem semP = new Sem(0); //un semaphore pour verifier le nombre de places occupees dans le buffer
+	protected Sem mutex = new Sem(1); //un semaphore pour l'exclusion mutuelle
+	protected Sem semV;
 	
 	public ProdConsSemaphore(int taille, int nbProd, int nbCons) {
 		super(taille, nbProd, nbCons);
