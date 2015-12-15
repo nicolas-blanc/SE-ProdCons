@@ -29,7 +29,7 @@ public class Producteur extends Acteur implements _Producteur {
 		try {
 			sleep(Aleatoire.valeur(this.moyenneTempsDeTraitement, this.deviationTempsDeTraitement) * 100);
 			tampon.put(this, message);
-			System.out.println("*** *** *** Inserted message : " + message.toString() + " *** *** ***");
+			System.out.println("--- --- --- Inserted message : " + message.toString() + " --- --- ---");
 		} catch (Exception e) {
 			System.out.println("// ----- Nouvelle Exception : Exception IN Producteur ----- //");
 			e.printStackTrace();
@@ -44,15 +44,16 @@ public class Producteur extends Acteur implements _Producteur {
 	public void run() {
 		System.out.println("Producteur : " + this.identification() + " // nombre de message : " + this.nombreDeMessages());
 		
-		for(int i = 0; i < nbMessageProduire; i++){
-			System.out.println("Production nouveau message -- Producteur : " + this.identification());
+		int i;
+		for(i = 0; i < nbMessageProduire; i++){
+			System.out.println("Production nouveau message -- Producteur : " + this.identification() + " -- Nombre de messsage restant : " + (nbMessageProduire - i - 1));
 			production(i);
 		}
 		
 		((ProdCons) this.tampon).enleverProducteur();
 		
 		System.out.println("Nombre de message restant dans le Tampon : " + this.tampon.enAttente() + " // Nombre de producteurs restant : " + ((ProdCons) this.tampon).getProd());
-		System.out.println("Fin de production de message -- Producteur : " + this.identification());
+		System.out.println("Fin de production de message -- Producteur : " + this.identification() + " -- Nombre de messsage restant : " + (nbMessageProduire - i));
 	}
 
 }

@@ -19,13 +19,12 @@ public class ProdCons implements Tampon {
 	protected int tailleBuffer;
 	protected int in, out;
 	protected int nbplein;
+	protected int nbvide;
 	
 	protected boolean stop;
 	
 	protected int nbProd;
 	protected int nbCons;
-	
-	private int nbvide;
 	
 	public ProdCons(int taille, int nbProd, int nbCons) {
 		tailleBuffer = taille;

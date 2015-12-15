@@ -28,18 +28,12 @@ public class Consommateur extends Acteur implements _Consommateur{
 		try {
 			MessageX message = (MessageX) tampon.get(this);
 			if (message != null) {
-				System.out.println("*** *** *** Retrieve message : " + message.toString() + " *** *** ***\n*** *** *** Récupéré par : " + this.identification());
+				System.out.println("*** *** *** Retrieve message : " + message.toString() + " *** *** ***\n            Récupéré par : " + this.identification());
 				sleep(Aleatoire.valeur(this.moyenneTempsDeTraitement, this.deviationTempsDeTraitement) * 100);				
 			}
 		} catch (InterruptedException e) {
-			if (isInterrupted()) {
-				Thread.currentThread().interrupt(); // réinterruption sur soi-même
-				System.out.println("~~~~~~~~~~> Interruption dans traiterMessage()");
-			}
-			else {
 				System.out.println("// ----- Nouvelle Exception : InterruptedException IN Consommateur ----- //");
 				e.printStackTrace();
-			}
 		} catch (Exception e) {
 			System.out.println("// ----- Nouvelle Exception : Exception IN Consommateur ----- //");
 			e.printStackTrace();
@@ -59,11 +53,6 @@ public class Consommateur extends Acteur implements _Consommateur{
 //			System.out.println("Récupération nouveau message -- Consommateur : " + this.identification() + " // Tampon.getStop : " + !((ProdCons) this.tampon).getStop() + " -- NbProd : " + ((ProdCons) tampon).getProd() + " -- Tampon.enAttente : " + this.tampon.enAttente());
 			System.out.println("Récupération nouveau message -- Consommateur : " + this.identification());
 			this.traiterMessage();				
-		}
-		
-		if (isInterrupted()) {
-			Thread.currentThread().interrupt();
-			System.out.println("~~~~~~~~~~> Interruption dans run()");
 		}
 		
 		((ProdCons) this.tampon).enleverConsommateur();
