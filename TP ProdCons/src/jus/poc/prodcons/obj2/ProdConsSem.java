@@ -5,12 +5,12 @@ import jus.poc.prodcons._Consommateur;
 import jus.poc.prodcons._Producteur;
 import jus.poc.prodcons.obj1.ProdCons;
 
-public class ProdConsSem2 extends ProdCons {
+public class ProdConsSem extends ProdCons {
 	
 	protected Sem semP = new Sem(1);
 	protected Sem semC = new Sem(1);
 	
-	public ProdConsSem2(int taille, int nbProd, int nbCons) {
+	public ProdConsSem(int taille, int nbProd, int nbCons) {
 		super(taille, nbProd, nbCons);
 	}
 	
