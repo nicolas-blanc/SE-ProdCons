@@ -88,7 +88,7 @@ public class TestProdCons extends jus.poc.prodcons.obj1.TestProdCons {
 	 * et enfin créé un certain nombre de thread producteur et consommateur
 	 */
 	protected void run() throws Exception {		
-		Tampon tampon = new ProdConsSem2(nbBuffer, nbProd, nbCons);
+		Tampon tampon = new ProdConsSem2((nbBuffer-1), nbProd, nbCons);
 		
 		this.createThread(tampon);
 
