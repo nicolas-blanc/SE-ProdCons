@@ -1,4 +1,4 @@
-package jus.poc.prodcons.obj1;
+package jus.poc.prodcons.obj5;
 
 import jus.poc.prodcons.Acteur;
 import jus.poc.prodcons.Aleatoire;
@@ -28,14 +28,25 @@ public class Producteur extends Acteur implements _Producteur {
 		return this.nbMessageProduire;
 	}
 
+	/**
+	 * Méthode lancé à la création du thread de Producteur : Produis un
+	 * certain nombre de message et les mets dans le buffer Si il a produitun
+	 * nombre suffisant de message, il s'arrète.
+	 */
 	public void run() {
-		System.out.println("Producteur :" + this.identification() + "no messages: " + this.nombreDeMessages());
+		System.out.println("Producteur : " + this.identification() + "// nombre de message : " + this.nombreDeMessages());
 		int tempsProduction = 0;
 		for(int i = 0; i < nbMessageProduire; i++){
 		
 			MessageX message = new MessageX(this, i);
 			tempsProduction = Aleatoire.valeur(moyenneTempsDeTraitement(), deviationTempsDeTraitement()); 
+			try {
+				this.observateur.productionMessage(this, message, tempsProduction);
 				System.out.println("Inserted message :" + message.toString() );
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			try {
 				Thread.sleep(tempsProduction);
 			} catch (Exception e) {

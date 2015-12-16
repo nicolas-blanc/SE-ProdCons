@@ -12,23 +12,10 @@ import jus.poc.prodcons.Observateur;
 import jus.poc.prodcons.Simulateur;
 import jus.poc.prodcons.Tampon;
 import jus.poc.prodcons._Producteur;
+import jus.poc.prodcons.obj3.Producteur;
+import jus.poc.prodcons.options.XmlReader;
 
 public class TestProdCons extends Simulateur {
-
-	protected void init(String file) throws InvalidPropertiesFormatException,
-			IOException, IllegalArgumentException, IllegalAccessException,
-			NoSuchFieldException, SecurityException {
-		Properties properties = new Properties();
-		properties.loadFromXML(ClassLoader.getSystemResourceAsStream(file));
-		String key;
-		int value;
-		Class<?> thisOne = getClass();
-		for (Map.Entry<Object, Object> entry : properties.entrySet()) {
-			key = (String) entry.getKey();
-			value = Integer.parseInt((String) entry.getValue());
-			thisOne.getDeclaredField(key).set(this, value);
-		}
-	}
 
 	public TestProdCons(Observateur observateur) {
 		super(observateur);
@@ -40,18 +27,32 @@ public class TestProdCons extends Simulateur {
 	 * producteur et consommateur
 	 */
 	protected void run() throws Exception {
-		// init("jus/poc/prodcons/options/options.xml");
-		this.observateur.init(1,50, 10);
-		Tampon tampon = new ProdConsSemaphore(this.observateur,10);
+		System.out.println("Objective 3");
+		Map<String, Integer> properties = XmlReader.readFromXml();
+		Integer numberOfConsumers = properties.get("nbCons");
+		Integer numberOfProducers = properties.get("nbProd");
+		Integer numberMessagesBuffer = properties.get("nbBuffer");
+		Integer tempsMoyenProduction = properties.get("tempsMoyenProduction");
+		Integer deviationTempsMoyenProduction = properties.get("deviationTempsMoyenProduction");
+		Integer tempsMoyenConsommation = properties.get("tempsMoyenConsommation");
+		Integer deviationTempsMoyenConsommation = properties.get("deviationTempsMoyenConsommation");
+		Integer nombreMoyenDeProduction = properties.get("nombreMoyenDeProduction");
+		Integer deviationNombreMoyenDeProduction = properties.get("deviationNombreMoyenDeProduction");
+		Integer nombreMoyenNbExemplaire = properties.get("nombreMoyenNbExemplaire");
+		this.observateur.init(numberOfProducers,numberOfConsumers, numberMessagesBuffer);
+		Tampon tampon = new ProdConsSemaphore(this.observateur,numberMessagesBuffer);
 
-		Runnable producteur = new Producteur(tampon, observateur, 2, 1);
-		this.observateur.newProducteur((_Producteur) producteur);
-
-		ExecutorService executor = Executors.newFixedThreadPool(10);
-
-		executor.submit(producteur);
-		for (int i = 0; i < 50; i++) {
-			Consommateur consommateur = new Consommateur(tampon, observateur,2,1);
+		ExecutorService executor = Executors.newFixedThreadPool(100);
+		
+		for(int i = 0; i < numberOfProducers; i++){
+			
+			Runnable producteur = new Producteur(tampon, observateur, tempsMoyenProduction, deviationTempsMoyenProduction);
+			this.observateur.newProducteur((_Producteur) producteur);
+			executor.submit(producteur);
+		}
+		
+		for (int i = 0; i < numberOfConsumers; i++) {
+			Consommateur consommateur = new Consommateur(tampon, observateur,tempsMoyenConsommation,deviationTempsMoyenConsommation);
 			this.observateur.newConsommateur(consommateur);
 			executor.submit(consommateur);
 		}

@@ -1,4 +1,4 @@
-package jus.poc.prodcons.obj1;
+package jus.poc.prodcons.obj5;
 
 import jus.poc.prodcons.Message;
 import jus.poc.prodcons._Producteur;
@@ -19,7 +19,7 @@ public class MessageX implements Message {
 
 	@Override
 	public String toString() {
-		return "[Producer "+producteur+"-Message :"+num+"]";
+		return "Le message a ete produit par : " + this.producteur;
 	}
 
 	

@@ -19,7 +19,7 @@ public class MessageX implements Message {
 
 	@Override
 	public String toString() {
-		return "Le message a été produit par : " + this.producteur + " // Avec le numéro : " + this.num;
+		return "Le message a ete produit par : " + this.producteur;
 	}
 
 	

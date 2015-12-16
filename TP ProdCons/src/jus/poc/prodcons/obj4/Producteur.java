@@ -48,11 +48,15 @@ public class Producteur extends Acteur implements _Producteur {
 			try {
 				tampon.put(this, message);
 				System.out.println("Inserted message " + nr + " times with id" + message.getMessageId() );
+				while(message.getNumConsommable() > 0);//le producteur attend jusqu'a la consommation du message produit de N fois;
+				System.out.println("Le message a ete consomme de N fois");
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}	
 		}
+		
+		System.out.println("Productoer finished produncing all messages");
 	}
 
 }

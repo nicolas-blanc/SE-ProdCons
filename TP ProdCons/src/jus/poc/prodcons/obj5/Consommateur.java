@@ -1,4 +1,4 @@
-package jus.poc.prodcons.obj1;
+package jus.poc.prodcons.obj5;
 
 import jus.poc.prodcons.Acteur;
 import jus.poc.prodcons.Aleatoire;
@@ -11,6 +11,8 @@ public class Consommateur extends Acteur implements _Consommateur {
 
 	private int nbMesssageLu;
 	private Tampon tampon;
+	private Observateur observateur;
+
 	public Consommateur(Tampon tampon, Observateur observateur,
 			int moyenneTempsDeTraitement, int deviationTempsDeTraitement)
 			throws ControlException {
@@ -27,6 +29,12 @@ public class Consommateur extends Acteur implements _Consommateur {
 		return this.nbMesssageLu;
 	}
 
+	/**
+	 * Méthode lancé à la création du thread de Concommateur : Récupère un
+	 * message dans le buffer quand il y en a un, si il n'y en pas, et qu'il n'y
+	 * a plus de producteur, le thread s'arrète le traite pendant un temps
+	 * aléatoire, puis récupère un nouveau message
+	 */
 	public void run() {
 		int tempsTraitement = 0;
 		MessageX message = null;
@@ -35,13 +43,19 @@ public class Consommateur extends Acteur implements _Consommateur {
 				tempsTraitement = Aleatoire.valeur(moyenneTempsDeTraitement,
 						deviationTempsDeTraitement);
 				message = (MessageX) tampon.get(this);
-				if(message !=null)
-					System.out.println("Retrieved message : " + message.toString()
-						+ "consumed by: " + this.identification());
+				System.out.println("Retrieve message : " + message.toString()
+						+ "\n Recupere par : " + this.identification());
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			try {
+				this.observateur.consommationMessage(this, message,
+						tempsTraitement);
+			} catch (ControlException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
