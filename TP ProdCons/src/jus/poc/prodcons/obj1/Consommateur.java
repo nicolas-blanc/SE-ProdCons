@@ -32,10 +32,10 @@ public class Consommateur extends Acteur implements _Consommateur{
 				sleep(Aleatoire.valeur(this.moyenneTempsDeTraitement, this.deviationTempsDeTraitement) * 100);				
 			}
 		} catch (InterruptedException e) {
-				System.out.println("// ----- Nouvelle Exception : InterruptedException IN Consommateur ----- //");
+//				System.out.println("// ----- Nouvelle Exception : InterruptedException IN Consommateur ----- //");
 				e.printStackTrace();
 		} catch (Exception e) {
-			System.out.println("// ----- Nouvelle Exception : Exception IN Consommateur ----- //");
+//			System.out.println("// ----- Nouvelle Exception : Exception IN Consommateur ----- //");
 			e.printStackTrace();
 		}
 	}
@@ -47,18 +47,16 @@ public class Consommateur extends Acteur implements _Consommateur{
 	 * puis récupère un nouveau message
 	 */
 	public void run() {
-		System.out.println("Nouveau Consommateur : " + this.identification());
+//		System.out.println("Nouveau Consommateur : " + this.identification());
 		
 		while (!((ProdCons) this.tampon).getStop() || this.tampon.enAttente() != 0) {
-//			System.out.println("Récupération nouveau message -- Consommateur : " + this.identification() + " // Tampon.getStop : " + !((ProdCons) this.tampon).getStop() + " -- NbProd : " + ((ProdCons) tampon).getProd() + " -- Tampon.enAttente : " + this.tampon.enAttente());
-			System.out.println("Récupération nouveau message -- Consommateur : " + this.identification());
+//			System.out.println("Récupération nouveau message -- Consommateur : " + this.identification());
 			this.traiterMessage();				
 		}
 		
 		((ProdCons) this.tampon).enleverConsommateur();
 		
-		System.out.println("Nombre de message restant dans le Tampon : " + this.tampon.enAttente());
-		System.out.println("Fin de récupération de message -- Consommateur : " + this.identification());
+//		System.out.println("Nombre de message restant dans le Tampon : " + this.tampon.enAttente());
+//		System.out.println("Fin de récupération de message -- Consommateur : " + this.identification());
 	}
-
 }

@@ -52,7 +52,7 @@ public class ProdCons implements Tampon {
 	public void enleverProducteur() {
 		this.nbProd--;
 		if (nbProd == 0) {
-			System.out.println("// ----- ----- \\ Fin du programme : nbprod = " + nbProd + "// ----- ----- \\");
+//			System.out.println("// ----- ----- \\ Fin du programme : nbprod = " + nbProd + "// ----- ----- \\");
 			this.finProg();
 		}
 	}
@@ -63,8 +63,8 @@ public class ProdCons implements Tampon {
 	
 	private synchronized void finProg() {
 		stop = true;
-		System.out.println("// ----- || -----\\ Changer variable stop // ----- || -----\\");
-		System.out.println("// ----- || -----\\ ProdConsSemaphore // ----- || -----\\ ");
+//		System.out.println("// ----- || -----\\ Changer variable stop // ----- || -----\\");
+//		System.out.println("// ----- || -----\\ ProdConsSemaphore // ----- || -----\\ ");
 		notifyAll();
 	}
 	
@@ -86,7 +86,7 @@ public class ProdCons implements Tampon {
 				nbplein--;
 				
 				Message m = buffer[out];
-				System.out.println("-----> Message Récupéré => " + m.toString() );
+//				System.out.println("-----> Message Récupéré => " + m.toString() );
 				out = (out + 1) % tailleBuffer;
 				
 				nbvide++;
@@ -109,7 +109,7 @@ public class ProdCons implements Tampon {
 				nbvide--;
 				
 				buffer[in] = arg1;
-				System.out.println("-----> Message Inséré => " + arg1.toString() );
+//				System.out.println("-----> Message Inséré => " + arg1.toString() );
 				in = (in + 1) % tailleBuffer;
 			
 				nbplein++;

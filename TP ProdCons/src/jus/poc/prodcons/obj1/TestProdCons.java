@@ -90,28 +90,12 @@ public class TestProdCons extends Simulateur {
 		Tampon tampon = new ProdCons((nbBuffer-1),nbProd,nbCons);
 		
 		this.createThread(tampon);
-		
-/*
-		System.out.println("// ----- ----- \\ Début boucle avant fin Producteur // ----- ----- \\");
-		
-		while (this.nbProd != 0) {
-//			System.out.println("========================================> Nombre de Producteur restant : " + this.nbProd);
-		}
-		
-		System.out.println("// ----- ----- \\ Plus de Producteur // ----- ----- \\");
 
-		int i = 0;
-		for (Thread thread : threadConsommateur) {
-			System.out.println("// ***** ***** \\ Interruption thread : " + i + " // ***** ***** \\");
-			thread.interrupt();
-			i++;
-		}
-*/
-		System.out.println("// ----- ----- \\ Fin de TestProdCons // ----- ----- \\");
+//		System.out.println("// ----- ----- \\ Fin de TestProdCons // ----- ----- \\");
 	}
 
 	public static void main(String[] args) {
-		System.out.println("// ----- ----- \\ Lancement programme : Obj1 // ----- ----- \\");
+//		System.out.println("// ----- ----- \\ Lancement programme : Obj1 // ----- ----- \\");
 		new TestProdCons(new Observateur()).start();
 		
 	}

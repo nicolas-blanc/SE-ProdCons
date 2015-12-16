@@ -14,7 +14,7 @@ public class MessageObj4 extends MessageX {
 
 	public MessageObj4(_Producteur arg0, int arg1, int nbExemplaire) {
 		super(arg0, arg1);
-		this.nbExemplaire = nbExemplaire;
+		this.nbExemplaire = nbExemplaire - 1;
 	}
 
 	@Override

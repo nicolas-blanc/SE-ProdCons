@@ -17,15 +17,15 @@ public class ProdConsSem extends ProdCons {
 	public void enleverProducteur() {
 		this.nbProd--;
 		if (nbProd == 0) {
-			System.out.println("// ----- ----- \\ Fin du programme : nbprod = " + nbProd + "// ----- ----- \\");
+//			System.out.println("// ----- ----- \\ Fin du programme : nbprod = " + nbProd + "// ----- ----- \\");
 			this.finProg();
 		}
 	}
 	
 	private synchronized void finProg() {
 		stop = true;
-		System.out.println("// ----- || -----\\ Changer variable stop || semP : " + semP.getValeur() + " || semC : " + semC.getValeur() + " // ----- || -----\\");
-		System.out.println("// ----- || -----\\ ProdConsSemaphore // ----- || -----\\ ");
+//		System.out.println("// ----- || -----\\ Changer variable stop || semP : " + semP.getValeur() + " || semC : " + semC.getValeur() + " // ----- || -----\\");
+//		System.out.println("// ----- || -----\\ ProdConsSemaphore // ----- || -----\\ ");
 		while (nbCons != 0) {
 			semC.V();
 		}

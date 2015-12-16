@@ -92,11 +92,11 @@ public class TestProdCons extends jus.poc.prodcons.obj1.TestProdCons {
 		
 		this.createThread(tampon);
 
-		System.out.println("// ----- ----- \\ Fin de TestProdCons // ----- ----- \\");
+//		System.out.println("// ----- ----- \\ Fin de TestProdCons // ----- ----- \\");
 	}
 
 	public static void main(String[] args) {
-		System.out.println("// ----- ----- \\ Lancement programme : Obj2 // ----- ----- \\");
+//		System.out.println("// ----- ----- \\ Lancement programme : Obj2 // ----- ----- \\");
 		new TestProdCons(new Observateur()).start();
 		
 	}
